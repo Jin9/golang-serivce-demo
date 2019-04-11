@@ -8,6 +8,12 @@ type Customer struct {
 	Phone string `json:"phone"`
 }
 
+// CustomerDetail is representation of a customer with token
+type CustomerDetail struct {
+	Token    string    `json:"token"`
+	Customer *Customer `json:"customer"`
+}
+
 // MessageResponse is representation of a status response
 type MessageResponse struct {
 	StatusCode    string `json:"statusCode"`
@@ -40,9 +46,9 @@ type MessageCustomerResponse struct {
 
 // MessageListCustomersResponse is represent a model of list of customer detail
 type MessageListCustomersResponse struct {
-	StatusCode    string      `json:"statusCode"`
-	StatusMessage string      `json:"statusMessage"`
-	Customers     []*Customer `json:"customers"`
+	StatusCode    string            `json:"statusCode"`
+	StatusMessage string            `json:"statusMessage"`
+	Customers     []*CustomerDetail `json:"customers"`
 }
 
 // MessageUpdateCustomerRequest is represent a model of update request
@@ -65,6 +71,14 @@ func NewCustomer(name string, age int, email string, phone string) *Customer {
 		Age:   age,
 		Email: email,
 		Phone: phone,
+	}
+}
+
+// NewCustomerDetail is a function to create new model of Customer with token
+func NewCustomerDetail(token string, customer *Customer) *CustomerDetail {
+	return &CustomerDetail{
+		Token:    token,
+		Customer: customer,
 	}
 }
 
@@ -95,7 +109,7 @@ func NewMessageCustomerResponse(statusCode string, statusMessage string, custome
 }
 
 // NewMessageListCustomersResponse is created a success query all customer response
-func NewMessageListCustomersResponse(statusCode string, statusMessage string, customers []*Customer) *MessageListCustomersResponse {
+func NewMessageListCustomersResponse(statusCode string, statusMessage string, customers []*CustomerDetail) *MessageListCustomersResponse {
 	return &MessageListCustomersResponse{
 		StatusCode:    statusCode,
 		StatusMessage: statusMessage,

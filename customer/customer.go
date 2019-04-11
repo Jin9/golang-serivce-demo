@@ -99,15 +99,15 @@ func FindCustomerDetailByToken(token string) (customer *model.Customer, err erro
 	return customer, nil
 }
 
-func mapAllCustomersDetail(rows *sql.Rows) (customers []*model.Customer, err error) {
+func mapAllCustomersDetail(rows *sql.Rows) (customers []*model.CustomerDetail, err error) {
 	for rows.Next() {
-		var name, email, phone string
+		var token, name, email, phone string
 		var age int
-		err = rows.Scan(&name, &age, &email, &phone)
+		err = rows.Scan(&token, &name, &age, &email, &phone)
 		if err != nil {
 			return nil, err
 		}
-		customer := model.NewCustomer(name, age, email, phone)
+		customer := model.NewCustomerDetail(token, model.NewCustomer(name, age, email, phone))
 		customers = append(customers, customer)
 	}
 
@@ -115,14 +115,14 @@ func mapAllCustomersDetail(rows *sql.Rows) (customers []*model.Customer, err err
 }
 
 // FindAllCustomerDetail is used to show all customers detail
-func FindAllCustomerDetail() (customers []*model.Customer, err error) {
+func FindAllCustomerDetail() (customers []*model.CustomerDetail, err error) {
 	db, err := connectDB()
 	if err != nil {
 		return nil, err
 	}
 	defer db.Close()
 
-	rows, err := db.Query(`SELECT customer.name, customer.age, customer.email, customer.phone FROM users.customers as customer`)
+	rows, err := db.Query(`SELECT customer.token, customer.name, customer.age, customer.email, customer.phone FROM users.customers as customer`)
 	if err != nil {
 		return nil, err
 	}

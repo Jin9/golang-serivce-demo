@@ -40,7 +40,7 @@ func prepareMessageFindResponse(statusCode string, statusMessage string, detail 
 	return model.NewMessageCustomerResponse(statusCode, statusMessage, detail)
 }
 
-func prepareMessageAllListResponse(statusCode string, statusMessage string, customers []*model.Customer) *model.MessageListCustomersResponse {
+func prepareMessageAllListResponse(statusCode string, statusMessage string, customers []*model.CustomerDetail) *model.MessageListCustomersResponse {
 	return model.NewMessageListCustomersResponse(statusCode, statusMessage, customers)
 }
 
