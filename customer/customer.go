@@ -122,7 +122,7 @@ func FindAllCustomerDetail() (customers []*model.CustomerDetail, err error) {
 	}
 	defer db.Close()
 
-	rows, err := db.Query(`SELECT customer.token, customer.name, customer.age, customer.email, customer.phone FROM users.customers as customer`)
+	rows, err := db.Query(`SELECT customer.token, customer.name, customer.age, customer.email, customer.phone FROM users.customers as customer order by customer.id asc`)
 	if err != nil {
 		return nil, err
 	}
