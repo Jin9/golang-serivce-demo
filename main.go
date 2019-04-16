@@ -4,7 +4,11 @@ import (
 	"./controller"
 )
 
+const (
+	port = ":12001"
+)
+
 func main() {
 	c := controller.Init()
-	c.Start(":12001")
+	c.Start(port)
 }
