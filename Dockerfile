@@ -12,8 +12,9 @@ RUN curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
 # Set up app
 WORKDIR /go/src/service-demo
 ADD . .
+RUN dep init
 RUN dep ensure
-RUN go build -v
+RUN go build
 
 EXPOSE 12001
 
