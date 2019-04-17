@@ -1,21 +1,18 @@
 
 FROM golang:1.12.4-alpine3.9
 
-# Set GOPATH/GOROOT environment variables
-RUN mkdir -p /go
-ENV GOPATH /go
-ENV PATH $GOPATH/bin:$PATH
-
-# go get all of the dependencies
+RUN apk --no-cache add curl
+RUN apk --no-cache add git
 RUN curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
 
 # Set up app
 WORKDIR /go/src/service-demo
 COPY . .
-RUN dep init
+
+RUN dep init 
 RUN dep ensure
-RUN go build
+RUN go install -v ./...
 
 EXPOSE 12001
 
-CMD ["./service-demo"]
+CMD ["service-demo"]
