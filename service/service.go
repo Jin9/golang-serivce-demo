@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"../customer"
-	"../model"
-	"../storage"
+	"gitlab.com/chinnawat.w/golang-service-demo/customer"
+	"gitlab.com/chinnawat.w/golang-service-demo/model"
+	"gitlab.com/chinnawat.w/golang-service-demo/storage"
 
 	"github.com/labstack/echo"
 )
