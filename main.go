@@ -1,7 +1,7 @@
 package main
 
 import (
-	"./controller"
+	"gitlab.com/chinnawat.w/golang-service-demo/controller"
 )
 
 const (

@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	"../model"
+	"gitlab.com/chinnawat.w/golang-service-demo/model"
 
 	// pq is a postgres driver
 	_ "github.com/lib/pq"

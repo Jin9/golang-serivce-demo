@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"../service"
+	"gitlab.com/chinnawat.w/golang-service-demo/service"
 
 	"github.com/labstack/echo"
 )
