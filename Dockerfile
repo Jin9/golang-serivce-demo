@@ -1,5 +1,5 @@
 
-FROM golang:1.12.4
+FROM golang:1.12.4-alpine3.9
 
 # Set GOPATH/GOROOT environment variables
 RUN mkdir -p /go
