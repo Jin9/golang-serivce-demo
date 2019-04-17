@@ -1,7 +1,10 @@
 version: '3.5'
 services:
   web:
-    image: "service_demo"
-    container_name: "service_container"
+    image: "golang-service-demo"
+    container_name: "golang-service-container"
     ports: 
       - "12001:12001"
+    networks:
+      - postgres
+    restart: unless-stopped
