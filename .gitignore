@@ -1,2 +1,6 @@
+# build
 go.*
 golang-service-demo
+
+# yml
+*.yml
