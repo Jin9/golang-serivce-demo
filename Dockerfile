@@ -6,6 +6,7 @@ RUN apk --no-cache add git
 WORKDIR /go/src/service-demo
 COPY . .
 
+RUN export GO111MODULE=on
 RUN go get -v ./...
 RUN go install -v ./...
 
