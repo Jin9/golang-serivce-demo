@@ -18,6 +18,17 @@ const (
 	dbname   = "profile"
 )
 
+const (
+	insertCustomer              = `INSERT INTO users.customers (token, name, age, email, phone) VALUES ($1, $2, $3, $4, $5);`
+	findTokenByToken            = `SELECT customer.token FROM users.customers as customer where customer.token='$1';`
+	findCustomerDetailByToken   = `SELECT customer.name, customer.age, customer.email, customer.phone FROM users.customers as customer where customer.token=$1`
+	findAllCustomer             = `SELECT customer.token, customer.name, customer.age, customer.email, customer.phone FROM users.customers as customer order by customer.id asc`
+	findIDByToken               = `SELECT customer.id FROM users.customers as customer where customer.token=$1`
+	updateCustomerDetailByToken = `UPDATE users.customers SET name=$2, age=$3, email=$4, phone=$5 WHERE token=$1;`
+	updateTokenByID             = `UPDATE users.customers SET token=$2 WHERE id=$1;`
+	deleteCustomerByToken       = `DELETE FROM users.customers as customer where customer.token=$1;`
+)
+
 func connectDB() (db *sql.DB, err error) {
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
 		"password=%s dbname=%s sslmode=disable",
@@ -39,7 +50,7 @@ func CheckDuplicateToken(token string) (err error) {
 	}
 	defer db.Close()
 
-	_, err = db.Query(`SELECT customer.token FROM users.customers as customer where customer.token='$1';`, token)
+	_, err = db.Query(findTokenByToken, token)
 	if err != nil {
 		return err
 	}
@@ -55,7 +66,7 @@ func InsertCustomer(token string, customer *model.Customer) (err error) {
 	}
 	defer db.Close()
 
-	sqlStatement := `INSERT INTO users.customers (token, name, age, email, phone) VALUES ($1, $2, $3, $4, $5);`
+	sqlStatement := insertCustomer
 
 	_, err = db.Exec(sqlStatement, token, customer.Name, customer.Age, customer.Email, customer.Phone)
 	if err != nil {
@@ -90,7 +101,7 @@ func FindCustomerDetailByToken(token string) (customer *model.Customer, err erro
 	}
 	defer db.Close()
 
-	row := db.QueryRow(`SELECT customer.name, customer.age, customer.email, customer.phone FROM users.customers as customer where customer.token=$1`, token)
+	row := db.QueryRow(findCustomerDetailByToken, token)
 	customer, err = mapCustomerDetail(row)
 	if err != nil {
 		return nil, err
@@ -122,7 +133,7 @@ func FindAllCustomerDetail() (customers []*model.CustomerDetail, err error) {
 	}
 	defer db.Close()
 
-	rows, err := db.Query(`SELECT customer.token, customer.name, customer.age, customer.email, customer.phone FROM users.customers as customer order by customer.id asc`)
+	rows, err := db.Query(findAllCustomer)
 	if err != nil {
 		return nil, err
 	}
@@ -143,7 +154,7 @@ func UpdateCustomerDetail(token string, customer *model.Customer) (err error) {
 	}
 	defer db.Close()
 
-	sqlStatement := `UPDATE users.customers SET name=$2, age=$3, email=$4, phone=$5 WHERE token=$1;`
+	sqlStatement := updateCustomerDetailByToken
 	_, err = db.Exec(sqlStatement, token, customer.Name, customer.Age, customer.Email, customer.Phone)
 	if err != nil {
 		return err
@@ -172,7 +183,7 @@ func findCustomerIDByToken(token string) (id uint64, err error) {
 	}
 	defer db.Close()
 
-	row := db.QueryRow(`SELECT customer.id FROM users.customers as customer where customer.token=$1`, token)
+	row := db.QueryRow(findIDByToken, token)
 	id, err = mapCustomerID(row)
 	if err != nil {
 		return 0, err
@@ -194,7 +205,7 @@ func UpdateCustomerToken(existToken string, newToken string) (err error) {
 	}
 	defer db.Close()
 
-	sqlStatement := `UPDATE users.customers SET token=$2 WHERE id=$1;`
+	sqlStatement := updateTokenByID
 	_, err = db.Exec(sqlStatement, id, newToken)
 	if err != nil {
 		return err
@@ -211,7 +222,7 @@ func DeleteCustomerByToken(token string) (err error) {
 	}
 	defer db.Close()
 
-	sqlStatement := `DELETE FROM users.customers as customer where customer.token=$1;`
+	sqlStatement := deleteCustomerByToken
 	_, err = db.Exec(sqlStatement, token)
 	if err != nil {
 		return err
