@@ -3,13 +3,12 @@ FROM golang:1.12.4-alpine3.9
 
 RUN apk --no-cache add git
 
-WORKDIR /go/src/service-demo
+WORKDIR $GOPATH/src/gitlab.com/chinnawat.w/golang-service-demo
 COPY . .
 
-RUN export GO111MODULE=on
-RUN go get -v ./...
+RUN go get -d -v ./...
 RUN go install -v ./...
 
 EXPOSE 12001
 
-CMD ["service-demo"]
+CMD ["golang-service-demo"]
