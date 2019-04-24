@@ -15,7 +15,7 @@ func Init() *echo.Echo {
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins:     []string{"http://172.20.10.10:8880"},
-		AllowMethods:     []string{http.MethodGet, http.MethodPatch, http.MethodPost},
+		AllowMethods:     []string{http.MethodGet, http.MethodPost, http.MethodPatch},
 		AllowHeaders:     []string{echo.HeaderOrigin, echo.HeaderContentType},
 		AllowCredentials: true,
 	}))
